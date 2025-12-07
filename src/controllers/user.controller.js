@@ -1,6 +1,5 @@
 import { User, Product, Seller } from '../models/index.js';
 
-// Get all users
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
@@ -21,7 +20,6 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-// Get single user
 export const getUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -47,7 +45,6 @@ export const getUser = async (req, res) => {
     }
 };
 
-// Update user
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -102,7 +99,6 @@ export const updateUser = async (req, res) => {
     }
 };
 
-// Delete user
 export const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -128,7 +124,6 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-// Add address to user
 export const addAddress = async (req, res) => {
     try {
         const { id } = req.params;
@@ -149,7 +144,6 @@ export const addAddress = async (req, res) => {
             });
         }
 
-        // If this is set as default, unset other defaults
         if (is_default) {
             user.addresses.forEach(addr => {
                 addr.is_default = false;
@@ -184,7 +178,6 @@ export const addAddress = async (req, res) => {
     }
 };
 
-// Update address
 export const updateAddress = async (req, res) => {
     try {
         const { id, addressIndex } = req.params;
@@ -240,7 +233,6 @@ export const updateAddress = async (req, res) => {
     }
 };
 
-// Delete address
 export const deleteAddress = async (req, res) => {
     try {
         const { id, addressIndex } = req.params;
@@ -281,7 +273,6 @@ export const deleteAddress = async (req, res) => {
     }
 };
 
-// Add to wishlist
 export const addToWishlist = async (req, res) => {
     try {
         const { id } = req.params;
@@ -302,7 +293,6 @@ export const addToWishlist = async (req, res) => {
             });
         }
 
-        // Verify product exists
         const product = await Product.findById(product_id);
         if (!product) {
             return res.status(404).json({ 
@@ -311,7 +301,6 @@ export const addToWishlist = async (req, res) => {
             });
         }
 
-        // Check if already in wishlist
         if (user.wishlist_ids.includes(product_id)) {
             return res.status(400).json({ 
                 success: false,
@@ -336,7 +325,6 @@ export const addToWishlist = async (req, res) => {
     }
 };
 
-// Remove from wishlist
 export const removeFromWishlist = async (req, res) => {
     try {
         const { id, product_id } = req.params;
@@ -368,7 +356,6 @@ export const removeFromWishlist = async (req, res) => {
     }
 };
 
-// Follow seller
 export const followSeller = async (req, res) => {
     try {
         const { id } = req.params;
@@ -389,7 +376,6 @@ export const followSeller = async (req, res) => {
             });
         }
 
-        // Verify seller exists
         const seller = await Seller.findById(seller_id);
         if (!seller) {
             return res.status(404).json({ 
@@ -398,7 +384,6 @@ export const followSeller = async (req, res) => {
             });
         }
 
-        // Check if already following
         if (user.following_seller_ids.includes(seller_id)) {
             return res.status(400).json({ 
                 success: false,
@@ -423,7 +408,6 @@ export const followSeller = async (req, res) => {
     }
 };
 
-// Unfollow seller
 export const unfollowSeller = async (req, res) => {
     try {
         const { id, seller_id } = req.params;

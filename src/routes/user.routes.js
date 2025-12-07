@@ -15,28 +15,15 @@ import {
 
 const router = express.Router();
 
-// Get all users
 router.get('/', getAllUsers);
-
-// Get single user
 router.get('/:id', getUser);
-
-// Update user
 router.put('/:id', updateUser);
-
-// Delete user
 router.delete('/:id', deleteUser);
-
-// Address routes
 router.post('/:id/addresses', addAddress);
 router.put('/:id/addresses/:addressIndex', updateAddress);
 router.delete('/:id/addresses/:addressIndex', deleteAddress);
-
-// Wishlist routes
 router.post('/:id/wishlist', addToWishlist);
 router.delete('/:id/wishlist/:product_id', removeFromWishlist);
-
-// Follow seller routes
 router.post('/:id/follow', followSeller);
 router.delete('/:id/follow/:seller_id', unfollowSeller);
 

@@ -20,11 +20,9 @@ app.use(cors({
   credentials: true
 }));
 
-// Body parsers to populate `req.body`
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/categories", categoryRoutes);

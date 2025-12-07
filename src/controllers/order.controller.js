@@ -1,6 +1,5 @@
 import { Order, Product, User } from '../models/index.js';
 
-// Get all orders (with optional user_id filter)
 export const getAllOrders = async (req, res) => {
     try {
         const { user_id } = req.query;
@@ -25,7 +24,6 @@ export const getAllOrders = async (req, res) => {
     }
 };
 
-// Get single order
 export const getOrder = async (req, res) => {
     try {
         const { id } = req.params;
@@ -53,7 +51,6 @@ export const getOrder = async (req, res) => {
     }
 };
 
-// Create order
 export const createOrder = async (req, res) => {
     try {
         const { 
@@ -70,7 +67,6 @@ export const createOrder = async (req, res) => {
             });
         }
 
-        // Verify user exists
         const user = await User.findById(user_id);
         if (!user) {
             return res.status(404).json({ 
@@ -79,7 +75,6 @@ export const createOrder = async (req, res) => {
             });
         }
 
-        // Validate items and calculate total
         let order_total = 0;
         const orderItems = [];
 
@@ -111,12 +106,10 @@ export const createOrder = async (req, res) => {
                 }
             });
 
-            // Update product stock
             product.stock_quantity -= item.quantity;
             await product.save();
         }
 
-        // Create order
         const order = new Order({
             user_id,
             order_total,
@@ -148,7 +141,6 @@ export const createOrder = async (req, res) => {
     }
 };
 
-// Update order status
 export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -169,14 +161,12 @@ export const updateOrderStatus = async (req, res) => {
             });
         }
 
-        // Add to status history
         order.status_history.push({
             status,
             date: new Date(),
             notes: notes || ''
         });
 
-        // Update shipment details if provided
         if (shipment_details) {
             order.shipment_details = {
                 ...order.shipment_details,
@@ -202,7 +192,6 @@ export const updateOrderStatus = async (req, res) => {
     }
 };
 
-// Delete order
 export const deleteOrder = async (req, res) => {
     try {
         const { id } = req.params;

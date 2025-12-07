@@ -1,6 +1,5 @@
 import { Category } from '../models/index.js';
 
-// Get all categories
 export const getAllCategories = async (req, res) => {
     try {
         const categories = await Category.find().sort({ createdAt: -1 });
@@ -19,7 +18,6 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
-// Get single category
 export const getCategory = async (req, res) => {
     try {
         const { id } = req.params;
@@ -45,7 +43,6 @@ export const getCategory = async (req, res) => {
     }
 };
 
-// Create category
 export const createCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
@@ -80,7 +77,6 @@ export const createCategory = async (req, res) => {
     }
 };
 
-// Update category
 export const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
@@ -119,7 +115,6 @@ export const updateCategory = async (req, res) => {
     }
 };
 
-// Delete category
 export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;

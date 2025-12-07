@@ -1,6 +1,5 @@
 import { Return, Order, User } from '../models/index.js';
 
-// Get all returns (with optional filters)
 export const getAllReturns = async (req, res) => {
     try {
         const { user_id, order_id, status } = req.query;
@@ -29,7 +28,6 @@ export const getAllReturns = async (req, res) => {
     }
 };
 
-// Get single return
 export const getReturn = async (req, res) => {
     try {
         const { id } = req.params;
@@ -57,7 +55,6 @@ export const getReturn = async (req, res) => {
     }
 };
 
-// Create return request
 export const createReturn = async (req, res) => {
     try {
         const { order_id, user_id, reason } = req.body;
@@ -69,7 +66,6 @@ export const createReturn = async (req, res) => {
             });
         }
 
-        // Verify order exists
         const order = await Order.findById(order_id);
         if (!order) {
             return res.status(404).json({ 
@@ -78,7 +74,6 @@ export const createReturn = async (req, res) => {
             });
         }
 
-        // Verify user exists and owns the order
         const user = await User.findById(user_id);
         if (!user) {
             return res.status(404).json({ 
@@ -94,7 +89,6 @@ export const createReturn = async (req, res) => {
             });
         }
 
-        // Check if return already exists for this order
         const existingReturn = await Return.findOne({ order_id, user_id });
         if (existingReturn) {
             return res.status(400).json({ 
@@ -128,7 +122,6 @@ export const createReturn = async (req, res) => {
     }
 };
 
-// Update return status
 export const updateReturnStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -176,7 +169,6 @@ export const updateReturnStatus = async (req, res) => {
     }
 };
 
-// Delete return
 export const deleteReturn = async (req, res) => {
     try {
         const { id } = req.params;

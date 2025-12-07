@@ -1,6 +1,5 @@
 import { Seller, User, Product } from '../models/index.js';
 
-// Get all sellers
 export const getAllSellers = async (req, res) => {
     try {
         const sellers = await Seller.find()
@@ -21,7 +20,6 @@ export const getAllSellers = async (req, res) => {
     }
 };
 
-// Get single seller
 export const getSeller = async (req, res) => {
     try {
         const { id } = req.params;
@@ -48,7 +46,6 @@ export const getSeller = async (req, res) => {
     }
 };
 
-// Get seller by user_id
 export const getSellerByUserId = async (req, res) => {
     try {
         const { user_id } = req.params;
@@ -75,7 +72,6 @@ export const getSellerByUserId = async (req, res) => {
     }
 };
 
-// Create seller
 export const createSeller = async (req, res) => {
     try {
         const { 
@@ -93,7 +89,6 @@ export const createSeller = async (req, res) => {
             });
         }
 
-        // Verify user exists
         const user = await User.findById(user_id);
         if (!user) {
             return res.status(404).json({ 
@@ -102,7 +97,6 @@ export const createSeller = async (req, res) => {
             });
         }
 
-        // Check if seller already exists for this user
         const existingSeller = await Seller.findOne({ user_id });
         if (existingSeller) {
             return res.status(400).json({ 
@@ -142,7 +136,6 @@ export const createSeller = async (req, res) => {
     }
 };
 
-// Update seller
 export const updateSeller = async (req, res) => {
     try {
         const { id } = req.params;
@@ -179,7 +172,6 @@ export const updateSeller = async (req, res) => {
     }
 };
 
-// Delete seller
 export const deleteSeller = async (req, res) => {
     try {
         const { id } = req.params;
@@ -205,7 +197,6 @@ export const deleteSeller = async (req, res) => {
     }
 };
 
-// Get seller's products
 export const getSellerProducts = async (req, res) => {
     try {
         const { id } = req.params;

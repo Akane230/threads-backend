@@ -6,7 +6,6 @@ const generateToken = (user_id) => {
     return jwt.sign({ user_id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
-// User Registration Route
 export const register = async (req, res) => {
     try {
         const { first_name, last_name, username, email, password, confirm_password } = req.body;

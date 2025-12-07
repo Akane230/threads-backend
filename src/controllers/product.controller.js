@@ -1,6 +1,5 @@
 import { Product, Category, Seller, Review } from '../models/index.js';
 
-// Get all products with filters
 export const getAllProducts = async (req, res) => {
     try {
         const { 
@@ -64,7 +63,6 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
-// Get single product
 export const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -92,7 +90,6 @@ export const getProduct = async (req, res) => {
     }
 };
 
-// Create product
 export const createProduct = async (req, res) => {
     try {
         const { 
@@ -114,7 +111,6 @@ export const createProduct = async (req, res) => {
             });
         }
 
-        // Verify seller exists
         const seller = await Seller.findById(seller_id);
         if (!seller) {
             return res.status(404).json({ 
@@ -123,7 +119,6 @@ export const createProduct = async (req, res) => {
             });
         }
 
-        // Verify categories exist
         const categoryIds = Array.isArray(category_id) ? category_id : [category_id];
         const categories = await Category.find({ _id: { $in: categoryIds } });
         if (categories.length !== categoryIds.length) {
@@ -147,7 +142,6 @@ export const createProduct = async (req, res) => {
 
         await product.save();
 
-        // Update seller product count
         seller.rating_summary.num_products += 1;
         await seller.save();
 
@@ -168,7 +162,6 @@ export const createProduct = async (req, res) => {
     }
 };
 
-// Update product
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -182,7 +175,6 @@ export const updateProduct = async (req, res) => {
             });
         }
 
-        // If category_id is being updated, verify categories exist
         if (updateData.category_id) {
             const categoryIds = Array.isArray(updateData.category_id) 
                 ? updateData.category_id 
@@ -217,7 +209,6 @@ export const updateProduct = async (req, res) => {
     }
 };
 
-// Delete product
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -230,7 +221,6 @@ export const deleteProduct = async (req, res) => {
             });
         }
 
-        // Update seller product count
         const seller = await Seller.findById(product.seller_id);
         if (seller && seller.rating_summary.num_products > 0) {
             seller.rating_summary.num_products -= 1;

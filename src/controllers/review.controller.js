@@ -1,6 +1,5 @@
 import { Review, Product, User } from '../models/index.js';
 
-// Get all reviews (with optional filters)
 export const getAllReviews = async (req, res) => {
     try {
         const { product_id, user_id, page = 1, limit = 20 } = req.query;
@@ -36,7 +35,6 @@ export const getAllReviews = async (req, res) => {
     }
 };
 
-// Get single review
 export const getReview = async (req, res) => {
     try {
         const { id } = req.params;
@@ -64,7 +62,6 @@ export const getReview = async (req, res) => {
     }
 };
 
-// Create review
 export const createReview = async (req, res) => {
     try {
         const { user_id, product_id, rating, comment, images } = req.body;
@@ -83,7 +80,6 @@ export const createReview = async (req, res) => {
             });
         }
 
-        // Verify user exists
         const user = await User.findById(user_id);
         if (!user) {
             return res.status(404).json({ 
@@ -92,7 +88,6 @@ export const createReview = async (req, res) => {
             });
         }
 
-        // Verify product exists
         const product = await Product.findById(product_id);
         if (!product) {
             return res.status(404).json({ 
@@ -101,7 +96,6 @@ export const createReview = async (req, res) => {
             });
         }
 
-        // Check if user already reviewed this product
         const existingReview = await Review.findOne({ user_id, product_id });
         if (existingReview) {
             return res.status(400).json({ 
@@ -120,7 +114,6 @@ export const createReview = async (req, res) => {
 
         await review.save();
 
-        // Update product review summary
         await updateProductReviewSummary(product_id);
 
         await review.populate('user_id', 'username first_name last_name profile_image');
@@ -140,7 +133,6 @@ export const createReview = async (req, res) => {
     }
 };
 
-// Update review
 export const updateReview = async (req, res) => {
     try {
         const { id } = req.params;
@@ -168,7 +160,6 @@ export const updateReview = async (req, res) => {
 
         await review.save();
 
-        // Update product review summary
         await updateProductReviewSummary(review.product_id);
 
         await review.populate('user_id', 'username first_name last_name profile_image');
@@ -188,7 +179,6 @@ export const updateReview = async (req, res) => {
     }
 };
 
-// Delete review
 export const deleteReview = async (req, res) => {
     try {
         const { id } = req.params;
@@ -204,7 +194,6 @@ export const deleteReview = async (req, res) => {
         const product_id = review.product_id;
         await Review.findByIdAndDelete(id);
 
-        // Update product review summary
         await updateProductReviewSummary(product_id);
 
         res.status(200).json({ 
@@ -220,7 +209,6 @@ export const deleteReview = async (req, res) => {
     }
 };
 
-// Helper function to update product review summary
 const updateProductReviewSummary = async (product_id) => {
     const reviews = await Review.find({ product_id });
     const rating_count = reviews.length;

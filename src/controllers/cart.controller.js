@@ -1,6 +1,5 @@
 import { Cart, Product } from '../models/index.js';
 
-// Get user's cart
 export const getCart = async (req, res) => {
     try {
         const { user_id } = req.params;
@@ -26,7 +25,6 @@ export const getCart = async (req, res) => {
     }
 };
 
-// Add item to cart
 export const addToCart = async (req, res) => {
     try {
         const { user_id } = req.params;
@@ -39,7 +37,6 @@ export const addToCart = async (req, res) => {
             });
         }
 
-        // Verify product exists
         const product = await Product.findById(product_id);
         if (!product) {
             return res.status(404).json({ 
@@ -48,7 +45,6 @@ export const addToCart = async (req, res) => {
             });
         }
 
-        // Check stock availability
         if (product.stock_quantity < quantity) {
             return res.status(400).json({ 
                 success: false,
@@ -59,19 +55,16 @@ export const addToCart = async (req, res) => {
         let cart = await Cart.findOne({ user_id });
 
         if (!cart) {
-            // Create new cart
             cart = new Cart({
                 user_id,
                 items: [{ product_id, quantity }]
             });
         } else {
-            // Check if product already in cart
             const existingItemIndex = cart.items.findIndex(
                 item => item.product_id.toString() === product_id
             );
 
             if (existingItemIndex > -1) {
-                // Update quantity
                 const newQuantity = cart.items[existingItemIndex].quantity + quantity;
                 if (product.stock_quantity < newQuantity) {
                     return res.status(400).json({ 
@@ -81,7 +74,6 @@ export const addToCart = async (req, res) => {
                 }
                 cart.items[existingItemIndex].quantity = newQuantity;
             } else {
-                // Add new item
                 cart.items.push({ product_id, quantity });
             }
         }
@@ -103,7 +95,6 @@ export const addToCart = async (req, res) => {
     }
 };
 
-// Update cart item quantity
 export const updateCartItem = async (req, res) => {
     try {
         const { user_id, product_id } = req.params;
@@ -135,7 +126,6 @@ export const updateCartItem = async (req, res) => {
             });
         }
 
-        // Check stock availability
         const product = await Product.findById(product_id);
         if (!product || product.stock_quantity < quantity) {
             return res.status(400).json({ 
@@ -162,7 +152,6 @@ export const updateCartItem = async (req, res) => {
     }
 };
 
-// Remove item from cart
 export const removeFromCart = async (req, res) => {
     try {
         const { user_id, product_id } = req.params;
@@ -196,7 +185,6 @@ export const removeFromCart = async (req, res) => {
     }
 };
 
-// Clear cart
 export const clearCart = async (req, res) => {
     try {
         const { user_id } = req.params;
