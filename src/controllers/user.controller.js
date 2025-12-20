@@ -48,7 +48,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { first_name, last_name, username, email, profile_image, phone_number } = req.body;
+        const { first_name, last_name, username, email, profile_picture, phone_number } = req.body;
 
         const user = await User.findById(id);
         if (!user) {
@@ -62,27 +62,51 @@ export const updateUser = async (req, res) => {
         if (last_name) user.last_name = last_name;
         if (username) user.username = username;
         if (email) user.email = email;
-        if (profile_image !== undefined) user.profile_image = profile_image;
         if (phone_number !== undefined) user.phone_number = phone_number;
+        
+        // Handle profile_picture update
+        if (profile_picture !== undefined) {
+            if (profile_picture === null) {
+                // Remove profile picture
+                user.profile_picture = null;
+            } else {
+                // Update profile picture with metadata
+                user.profile_picture = {
+                    filename: profile_picture.filename,
+                    mimetype: profile_picture.mimetype,
+                    data: Buffer.from(profile_picture.data, 'base64'),
+                    size: profile_picture.size
+                };
+            }
+        }
 
         await user.save();
+
+        // Convert Buffer back to base64 for response
+        const userResponse = {
+            _id: user._id,
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            profile_image: user.profile_image,
+            profile_picture: user.profile_picture ? {
+                filename: user.profile_picture.filename,
+                mimetype: user.profile_picture.mimetype,
+                data: user.profile_picture.data.toString('base64'),
+                size: user.profile_picture.size
+            } : null,
+            wishlist_ids: user.wishlist_ids,
+            following_seller_ids: user.following_seller_ids,
+            addresses: user.addresses,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+        };
 
         res.status(200).json({ 
             success: true,
             message: 'User updated successfully',
-            user: {
-                _id: user._id,
-                username: user.username,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                profile_image: user.profile_image,
-                wishlist_ids: user.wishlist_ids,
-                following_seller_ids: user.following_seller_ids,
-                addresses: user.addresses,
-                created_at: user.created_at,
-                updated_at: user.updated_at
-            }
+            user: userResponse
         });
     } catch (error) {
         if (error.code === 11000) {
@@ -439,4 +463,3 @@ export const unfollowSeller = async (req, res) => {
         });
     }
 };
-
