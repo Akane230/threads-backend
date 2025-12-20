@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Embedded Product Snapshot Schema (within order items)
 const ProductSnapshotSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -12,7 +11,6 @@ const ProductSnapshotSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
-// Embedded Order Item Schema
 const OrderItemSchema = new mongoose.Schema({
     product_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,7 +28,6 @@ const OrderItemSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
-// Embedded Shipping Address Snapshot Schema
 const ShippingAddressSnapshotSchema = new mongoose.Schema({
     street: {
         type: String,
@@ -50,7 +47,6 @@ const ShippingAddressSnapshotSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
-// Embedded Payment Details Schema
 const PaymentDetailsSchema = new mongoose.Schema({
     payment_method: {
         type: String,
@@ -65,12 +61,12 @@ const PaymentDetailsSchema = new mongoose.Schema({
         type: String
     },
     status: {
+        enum: ['pending', 'paid', 'failed', 'refunded'],
         type: String,
         required: true
     }
 }, { _id: false });
 
-// Embedded Shipment Details Schema
 const ShipmentDetailsSchema = new mongoose.Schema({
     tracking_number: {
         type: String
@@ -79,6 +75,7 @@ const ShipmentDetailsSchema = new mongoose.Schema({
         type: String
     },
     status: {
+        enum: ['pending', 'shipped', 'out for delivery', 'delivered', 'returned'],
         type: String
     },
     estimated_delivery: {
@@ -86,7 +83,6 @@ const ShipmentDetailsSchema = new mongoose.Schema({
     }
 }, { _id: false });
 
-// Embedded Status History Schema
 const StatusHistorySchema = new mongoose.Schema({
     status: {
         type: String,

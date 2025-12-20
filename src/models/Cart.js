@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Embedded Cart Item Schema
 const CartItemSchema = new mongoose.Schema({
     product_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +32,6 @@ const CartSchema = new mongoose.Schema({
     timestamps: false
 });
 
-// Update timestamp on save
 CartSchema.pre('save', function(next) {
     this.updated_at = Date.now();
     next();

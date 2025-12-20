@@ -2,7 +2,7 @@ import { Order, Product, User } from '../models/index.js';
 
 export const getAllOrders = async (req, res) => {
     try {
-        const { user_id } = req.query;
+        const { user_id } = req.params;
         const query = user_id ? { user_id } : {};
         
         const orders = await Order.find(query)

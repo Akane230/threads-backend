@@ -95,8 +95,7 @@ export const createProduct = async (req, res) => {
         const { 
             name, 
             description, 
-            product_image, 
-            images, 
+            product_images, // Now expects array of {filename, mimetype, data, size}
             price, 
             stock_quantity, 
             status,
@@ -131,13 +130,16 @@ export const createProduct = async (req, res) => {
         const product = new Product({
             name,
             description,
-            product_image: product_image || null,
-            images: images || [],
+            product_images: product_images || [],
             price,
             stock_quantity: stock_quantity || 0,
             status: status || 'active',
             seller_id,
-            category_id: categoryIds
+            category_id: categoryIds,
+            review_summary: {
+                avg_rating: 0,
+                rating_count: 0
+            }
         });
 
         await product.save();
@@ -239,4 +241,3 @@ export const deleteProduct = async (req, res) => {
         });
     }
 };
-

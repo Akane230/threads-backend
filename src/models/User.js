@@ -1,7 +1,26 @@
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 
-// Embedded Address Schema
+const ProfilePictureSchema = new mongoose.Schema({
+    filename: {
+        type: String,
+        required: true
+    },
+    mimetype: {
+        type: String,
+        required: true
+    },
+    data: {
+        type: Buffer,
+        required: true
+    },
+    size: {
+        type: Number,
+        required: false
+    }
+}, { _id: false });
+
+
 const AddressSchema = new mongoose.Schema({
     address_type: {
         type: String,
@@ -55,8 +74,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
+    phone_number: {
+        type: String,
+        default: null
+    },
     profile_image: {
         type: String,
+        default: null
+    },
+    profile_picture: {
+        type: ProfilePictureSchema,
         default: null
     },
     wishlist_ids: [{

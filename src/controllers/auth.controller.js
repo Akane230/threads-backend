@@ -60,6 +60,7 @@ export const register = async (req, res) => {
             message: "User registered successfully", 
             token,
             user: {
+                user_id: user._id,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 username: user.username,
@@ -112,6 +113,7 @@ export const login = async(req, res) => {
             message: "Login successful",
             token,
             user: {
+                user_id: user._id,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 username: user.username,
@@ -128,5 +130,3 @@ export const login = async(req, res) => {
         })
     }
 };
-
-export default router;

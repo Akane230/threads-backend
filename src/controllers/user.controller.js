@@ -48,7 +48,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { first_name, last_name, username, email, profile_image } = req.body;
+        const { first_name, last_name, username, email, profile_image, phone_number } = req.body;
 
         const user = await User.findById(id);
         if (!user) {
@@ -63,6 +63,7 @@ export const updateUser = async (req, res) => {
         if (username) user.username = username;
         if (email) user.email = email;
         if (profile_image !== undefined) user.profile_image = profile_image;
+        if (phone_number !== undefined) user.phone_number = phone_number;
 
         await user.save();
 

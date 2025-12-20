@@ -1,5 +1,24 @@
 import mongoose from 'mongoose';
 
+const ImagesSchema = new mongoose.Schema({
+    filename: {
+        type: String,
+        required: true
+    },
+    mimetype: {
+        type: String,
+        required: true
+    },
+    data: {
+        type: Buffer,
+        required: true
+    },
+    size: {
+        type: Number,
+        required: false
+    }
+}, { _id: false });
+
 const ReviewSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,7 +44,9 @@ const ReviewSchema = new mongoose.Schema({
         required: true
     },
     images: [{
-        type: String
+        type: ImagesSchema,
+        required: false,
+        default: null
     }],
     created_at: {
         type: Date,

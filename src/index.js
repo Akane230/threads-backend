@@ -20,8 +20,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '16mb' }));
+app.use(express.urlencoded({ extended: true, limit: '16mb' }))
 
 app.use("/api/auth", authRoutes);
 app.use("/api/carts", cartRoutes);

@@ -45,6 +45,42 @@ const SellerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    store_profile_photo: {
+        data: {
+            type: Buffer,
+            required: false
+        },
+        mimetype: {
+            type: String,
+            required: false
+        },
+        filename: {
+            type: String,
+            required: false
+        },
+        size: {
+            type: Number,
+            required: false
+        }
+    },
+    store_cover_photo: {
+        data: {
+            type: Buffer,
+            required: false
+        },
+        mimetype: {
+            type: String,
+            required: false
+        },
+        filename: {
+            type: String,
+            required: false
+        },
+        size: {
+            type: Number,
+            required: false
+        }
+    },
     rating_summary: {
         type: RatingSummarySchema,
         default: () => ({ avg_rating: 0, rating_count: 0, num_products: 0 })
@@ -63,5 +99,3 @@ const SellerSchema = new mongoose.Schema({
 
 const Seller = mongoose.model('Seller', SellerSchema);
 export default Seller;
-
-

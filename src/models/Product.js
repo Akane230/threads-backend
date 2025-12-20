@@ -1,5 +1,24 @@
 import mongoose from 'mongoose';
 
+const ProductImageSchema = new mongoose.Schema({
+    filename: {
+        type: String,
+        required: true
+    },
+    mimetype: {
+        type: String,
+        required: true
+    },
+    data: {
+        type: Buffer,
+        required: true
+    },
+    size: {
+        type: Number,
+        required: false
+    }
+}, { _id: false });
+
 // Embedded Review Summary Schema
 const ReviewSummarySchema = new mongoose.Schema({
     avg_rating: {
@@ -25,13 +44,9 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    product_image: {
-        type: String,
+    product_images: [{
+        type: ProductImageSchema,
         default: null
-    },
-    images: [{
-        type: String,
-        required: true
     }],
     price: {
         type: Number,
