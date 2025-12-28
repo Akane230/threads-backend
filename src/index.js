@@ -33,7 +33,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/sellers", sellerRoutes);
 app.use("/api/users", userRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on PORT ${PORT}`);
   connectDB();
 });
